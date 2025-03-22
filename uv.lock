@@ -779,7 +779,7 @@ wheels = [
 
 [[package]]
 name = "mcp-agent"
-version = "0.0.8"
+version = "0.0.10"
 source = { editable = "." }
 dependencies = [
     { name = "fastapi" },
@@ -814,6 +814,7 @@ temporal = [
 [package.dev-dependencies]
 dev = [
     { name = "anthropic" },
+    { name = "mcp-agent" },
     { name = "pre-commit" },
     { name = "pydantic" },
     { name = "pyyaml" },
@@ -846,6 +847,7 @@ provides-extras = ["temporal", "anthropic", "openai", "cohere"]
 [package.metadata.requires-dev]
 dev = [
     { name = "anthropic", specifier = ">=0.42.0" },
+    { name = "mcp-agent", editable = "." },
     { name = "pre-commit", specifier = ">=4.0.1" },
     { name = "pydantic", specifier = ">=2.10.4" },
     { name = "pyyaml", specifier = ">=6.0.2" },

@@ -1,6 +1,5 @@
 # Core framework dependency
-mcp-agent @ file://../../  # Link to the local mcp-agent project root
+mcp-agent
 
 # Additional dependencies specific to this example
-anthropic
 openai

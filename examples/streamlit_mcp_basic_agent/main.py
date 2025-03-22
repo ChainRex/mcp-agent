@@ -17,42 +17,41 @@ def format_list_tools_result(list_tools_result: ListToolsResult):
 async def main():
     await app.initialize()
 
-    finder_agent = Agent(
-        name="finder",
-        instruction="""You are an agent with access to the filesystem,
-        as well as the ability to fetch URLs. Your job is to identify
-        the closest match to a user's request, make the appropriate tool calls,
-        and return the URI and CONTENTS of the closest match.""",
-        server_names=["fetch", "filesystem"],
+    fetch_agent = Agent(
+        name="fetch_assistant",
+        instruction="""You are an assistant that can fetch content from the web.
+        You can retrieve information from websites when users ask for specific online content.
+        Use the fetch tools available to you to retrieve and provide information.""",
+        server_names=["fetch"],
     )
-    await finder_agent.initialize()
-    llm = await finder_agent.attach_llm(OpenAIAugmentedLLM)
+    await fetch_agent.initialize()
+    llm = await fetch_agent.attach_llm(OpenAIAugmentedLLM)
 
-    tools = await finder_agent.list_tools()
+    tools = await fetch_agent.list_tools()
     tools_str = format_list_tools_result(tools)
 
-    st.title("💬 Basic Agent Chatbot")
-    st.caption("🚀 A Streamlit chatbot powered by mcp-agent")
+    st.title("🌐 Web Content Fetcher")
+    st.caption("🚀 A Streamlit chatbot powered by mcp-agent using SSE")
 
-    with st.expander("View Tools"):
+    with st.expander("View Available Tools"):
         st.markdown(tools_str)
 
     if "messages" not in st.session_state:
         st.session_state["messages"] = [
-            {"role": "assistant", "content": "How can I help you?"}
+            {"role": "assistant", "content": "I can fetch content from websites for you. What would you like me to retrieve?"}
         ]
 
     for msg in st.session_state["messages"]:
         st.chat_message(msg["role"]).write(msg["content"])
 
-    if prompt := st.chat_input("Type your message here..."):
+    if prompt := st.chat_input("Enter a URL or ask about web content..."):
         st.session_state["messages"].append({"role": "user", "content": prompt})
 
         st.chat_message("user").write(prompt)
 
         with st.chat_message("assistant"):
             response = ""
-            with st.spinner("Thinking..."):
+            with st.spinner("Fetching content..."):
                 response = await llm.generate_str(
                     message=prompt, request_params=RequestParams(use_history=True)
                 )
@@ -62,6 +61,6 @@ async def main():
 
 
 if __name__ == "__main__":
-    app = MCPApp(name="mcp_basic_agent")
+    app = MCPApp(name="fetch_assistant")
 
     asyncio.run(main())

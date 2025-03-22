@@ -13,13 +13,14 @@ logger:
 mcp:
   servers:
     fetch:
-      command: "uvx"
-      args: ["mcp-server-fetch"]
+      command: "python3"
+      args: ["-m", "mcp_server_fetch"]
     filesystem:
       command: "npx"
-      args: ["-y", "@modelcontextprotocol/server-filesystem"]
+      args: ["@modelcontextprotocol/server-filesystem"]
 
 openai:
   # Secrets (API keys, etc.) are stored in an mcp_agent.secrets.yaml file which can be gitignored
   #  default_model: "o3-mini"
   default_model: "gpt-4o-mini"
+  base_url: "http://45.11.92.123:8000"

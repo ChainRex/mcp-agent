@@ -50,6 +50,7 @@ build-backend = "hatchling.build"
 [dependency-groups]
 dev = [
     "anthropic>=0.42.0",
+    "mcp-agent",
     "pre-commit>=4.0.1",
     "pydantic>=2.10.4",
     "pyyaml>=6.0.2",
@@ -71,3 +72,6 @@ mcp-agent = ["data/*.json"]
 
 [tool.uv.workspace]
 members = ["examples/streamlit_mcp_basic_agent"]
+
+[tool.uv.sources]
+mcp-agent = { workspace = true }

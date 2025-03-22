@@ -9,12 +9,10 @@ from mcp_agent.config import (
     MCPSettings,
     MCPServerSettings,
     OpenAISettings,
-    AnthropicSettings,
 )
 from mcp_agent.agents.agent import Agent
 from mcp_agent.workflows.llm.augmented_llm import RequestParams
 from mcp_agent.workflows.llm.llm_selector import ModelPreferences
-from mcp_agent.workflows.llm.augmented_llm_anthropic import AnthropicAugmentedLLM
 from mcp_agent.workflows.llm.augmented_llm_openai import OpenAIAugmentedLLM
 
 settings = Settings(
@@ -23,21 +21,19 @@ settings = Settings(
     mcp=MCPSettings(
         servers={
             "fetch": MCPServerSettings(
-                command="uvx",
-                args=["mcp-server-fetch"],
+                command="python3",
+                args=["-m", "mcp_server_fetch"],
             ),
             "filesystem": MCPServerSettings(
                 command="npx",
-                args=["-y", "@modelcontextprotocol/server-filesystem"],
+                args=["@modelcontextprotocol/server-filesystem"],
             ),
         }
     ),
     openai=OpenAISettings(
         api_key="sk-my-openai-api-key",
         default_model="gpt-4o-mini",
-    ),
-    anthropic=AnthropicSettings(
-        api_key="sk-my-anthropic-api-key",
+        base_url="http://45.11.92.123:8000",
     ),
 )
 
@@ -76,9 +72,7 @@ async def example_usage():
             )
             logger.info(f"mcp_agent.config.yaml contents: {result}")
 
-            # Let's switch the same agent to a different LLM
-            llm = await finder_agent.attach_llm(AnthropicAugmentedLLM)
-
+            # 获取URL内容
             result = await llm.generate_str(
                 message="Print the first 2 paragraphs of https://www.anthropic.com/research/building-effective-agents",
             )
